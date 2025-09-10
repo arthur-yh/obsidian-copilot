@@ -404,4 +404,43 @@ export function registerCommands(
     const modal = new ApplyCustomCommandModal(plugin.app);
     modal.open();
   });
+
+  // VaultQA API Server commands
+  addCommand(plugin, COMMAND_IDS.START_VAULT_QA_API_SERVER, async () => {
+    if (!plugin.vaultQAAPIManager) {
+      new Notice("VaultQA API Manager not available");
+      return;
+    }
+    
+    const success = await plugin.vaultQAAPIManager.startServer();
+    if (success) {
+      new Notice("VaultQA API Server started successfully");
+    }
+  });
+
+  addCommand(plugin, COMMAND_IDS.STOP_VAULT_QA_API_SERVER, () => {
+    if (!plugin.vaultQAAPIManager) {
+      new Notice("VaultQA API Manager not available");
+      return;
+    }
+    
+    plugin.vaultQAAPIManager.stopServer();
+  });
+
+  addCommand(plugin, COMMAND_IDS.TOGGLE_VAULT_QA_API_SERVER, async () => {
+    if (!plugin.vaultQAAPIManager) {
+      new Notice("VaultQA API Manager not available");
+      return;
+    }
+    
+    const status = plugin.vaultQAAPIManager.getServerStatus();
+    if (status.running) {
+      plugin.vaultQAAPIManager.stopServer();
+    } else {
+      const success = await plugin.vaultQAAPIManager.startServer();
+      if (success) {
+        new Notice("VaultQA API Server started successfully");
+      }
+    }
+  });
 }
