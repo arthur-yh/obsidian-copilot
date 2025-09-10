@@ -622,6 +622,9 @@ export const COMMAND_IDS = {
   ADD_SELECTION_TO_CHAT_CONTEXT: "add-selection-to-chat-context",
   ADD_CUSTOM_COMMAND: "add-custom-command",
   APPLY_CUSTOM_COMMAND: "apply-custom-command",
+  START_VAULT_QA_API_SERVER: "start-vault-qa-api-server",
+  STOP_VAULT_QA_API_SERVER: "stop-vault-qa-api-server",
+  TOGGLE_VAULT_QA_API_SERVER: "toggle-vault-qa-api-server",
 } as const;
 
 export const COMMAND_NAMES: Record<CommandId, string> = {
@@ -647,6 +650,9 @@ export const COMMAND_NAMES: Record<CommandId, string> = {
   [COMMAND_IDS.ADD_SELECTION_TO_CHAT_CONTEXT]: "Add selection to chat context",
   [COMMAND_IDS.ADD_CUSTOM_COMMAND]: "Add new custom command",
   [COMMAND_IDS.APPLY_CUSTOM_COMMAND]: "Apply custom command",
+  [COMMAND_IDS.START_VAULT_QA_API_SERVER]: "Start VaultQA API Server",
+  [COMMAND_IDS.STOP_VAULT_QA_API_SERVER]: "Stop VaultQA API Server",
+  [COMMAND_IDS.TOGGLE_VAULT_QA_API_SERVER]: "Toggle VaultQA API Server",
 };
 
 export type CommandId = (typeof COMMAND_IDS)[keyof typeof COMMAND_IDS];
@@ -749,6 +755,8 @@ export const DEFAULT_SETTINGS: CopilotSettings = {
   ],
   reasoningEffort: DEFAULT_MODEL_SETTING.REASONING_EFFORT,
   verbosity: DEFAULT_MODEL_SETTING.VERBOSITY,
+  enableVaultQAAPI: false,
+  vaultQAApiPort: 3000,
 };
 
 export const EVENT_NAMES = {

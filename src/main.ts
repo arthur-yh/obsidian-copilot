@@ -42,6 +42,7 @@ import {
   WorkspaceLeaf,
 } from "obsidian";
 import { IntentAnalyzer } from "./LLMProviders/intentAnalyzer";
+import { VaultQAAPIManager } from "./api/vaultQAAPIManager";
 
 // Removed unused FileTrackingState interface
 
@@ -56,6 +57,7 @@ export default class CopilotPlugin extends Plugin {
   settingsUnsubscriber?: () => void;
   private autocompleteService: AutocompleteService;
   chatUIState: ChatUIState;
+  vaultQAAPIManager: VaultQAAPIManager;
 
   async onload(): Promise<void> {
     await this.loadSettings();
@@ -148,6 +150,14 @@ export default class CopilotPlugin extends Plugin {
     // Initialize autocomplete service
     this.autocompleteService = AutocompleteService.getInstance(this);
     this.customCommandRegister = new CustomCommandRegister(this, this.app.vault);
+    
+    // Initialize VaultQA API Manager
+    this.vaultQAAPIManager = new VaultQAAPIManager(this.app, this);
+    
+    // Auto-start API server if enabled in settings
+    if (getSettings().enableVaultQAAPI) {
+      this.vaultQAAPIManager.startServer();
+    }
     this.app.workspace.onLayoutReady(() => {
       this.customCommandRegister.initialize().then(migrateCommands).then(suggestDefaultCommands);
     });
@@ -161,6 +171,11 @@ export default class CopilotPlugin extends Plugin {
     this.customCommandRegister.cleanup();
     this.settingsUnsubscriber?.();
     this.autocompleteService?.destroy();
+    
+    // Stop VaultQA API server if running
+    if (this.vaultQAAPIManager) {
+      this.vaultQAAPIManager.stopServer();
+    }
 
     logInfo("Copilot plugin unloaded");
   }

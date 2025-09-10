@@ -129,6 +129,10 @@ export interface CopilotSettings {
   reasoningEffort: "minimal" | "low" | "medium" | "high";
   /** Default verbosity level for models that support it */
   verbosity: "low" | "medium" | "high";
+  /** Enable VaultQA API Server */
+  enableVaultQAAPI: boolean;
+  /** Port for VaultQA API Server */
+  vaultQAApiPort: number;
 }
 
 export const settingsStore = createStore();
